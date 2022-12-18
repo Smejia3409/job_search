@@ -7,6 +7,6 @@ with Bot() as bot:
     print("Enter location")
     location = input()
     bot.search(job, location)
-
+    bot.get_jobs()
 
 

@@ -13,7 +13,7 @@ class Bot(webdriver.Chrome):
         self.teardown = False
         # makes window full screen
         super(Bot, self).__init__( service=Service(ChromeDriverManager().install()), options=options)
-        self.implicitly_wait(15)
+        self.implicitly_wait(5)
         self.maximize_window()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -27,6 +27,8 @@ class Bot(webdriver.Chrome):
         self.get("https://indeed.com")
 
 
+
+
     def search(self, job, location):
         # finding input id for job and location input
         job_input = self.find_element(by=By.ID, value="text-input-what")
@@ -38,3 +40,12 @@ class Bot(webdriver.Chrome):
         job_input.send_keys(Keys.ENTER)
 
 
+    def get_jobs(self):
+        job_list = self.find_elements(by=By.CLASS_NAME, value="resultContent")
+
+        for job in job_list:
+            title = job.find_element(by=By.TAG_NAME, value="span")
+            link = job.find_element(by=By.TAG_NAME, value="a")
+            print(title.get_attribute("innerHTML"), link.get_attribute("href"))
+        if(len(job)==0):
+            print("No results found")
